@@ -6,10 +6,12 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const depth = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const depth = window.scrollY + (windowHeight / 2);
       setScrollDepth(depth);
     };
 
+    handleScroll(); // Initialize on mount
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -26,21 +28,70 @@ function App() {
 
   return (
     <div className={`ocean-container ${zone}`}>
+      {/* Fishing Line */}
+      <div className="fishing-line-container">
+        <div className="fishing-rod"></div>
+        <svg className="fishing-line" style={{ height: `${scrollDepth + 100}px` }}>
+          <line 
+            x1="100" 
+            y1="0" 
+            x2="100" 
+            y2={scrollDepth + 100}
+            stroke="rgba(139, 69, 19, 0.6)"
+            strokeWidth="2"
+            strokeDasharray="5,5"
+          />
+        </svg>
+        <div 
+          className="fishing-hook" 
+          style={{ 
+            top: `${scrollDepth + 80}px`,
+            left: '100px'
+          }}
+        >
+          <div className="hook-shape"></div>
+        </div>
+      </div>
+
       {/* Depth Indicator */}
       <div className="depth-indicator">
-        <div className="depth-meter">
-          <div className="depth-fill" style={{ height: `${Math.min((scrollDepth / 4000) * 100, 100)}%` }}></div>
+        <div className="depth-display">
+          <div className="depth-number">{Math.round(scrollDepth)}m</div>
+          <div className="depth-zone-label">{zone.toUpperCase()} ZONE</div>
         </div>
-        <span className="depth-label">{Math.round(scrollDepth)}m</span>
+        <div className="depth-meter">
+          <div className="depth-markers">
+            <div className="marker" style={{ top: '0%' }}><span>0m</span></div>
+            <div className="marker" style={{ top: '20%' }}><span>800m</span></div>
+            <div className="marker" style={{ top: '40%' }}><span>1600m</span></div>
+            <div className="marker" style={{ top: '60%' }}><span>2400m</span></div>
+            <div className="marker" style={{ top: '80%' }}><span>3200m</span></div>
+            <div className="marker" style={{ top: '100%' }}><span>4000m</span></div>
+          </div>
+          <div className="depth-fill" style={{ height: `${Math.min((scrollDepth / 4000) * 100, 100)}%` }}>
+            <div className="depth-indicator-dot"></div>
+          </div>
+        </div>
+        <div className="depth-stats">
+          <div className="stat">
+            <div className="stat-label">Pressure</div>
+            <div className="stat-value">{Math.round(scrollDepth * 0.1)} atm</div>
+          </div>
+          <div className="stat">
+            <div className="stat-label">Light</div>
+            <div className="stat-value">{Math.max(0, 100 - Math.round(scrollDepth * 0.05))}%</div>
+          </div>
+        </div>
       </div>
 
       {/* Floating Particles */}
       <div className="particles">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(50)].map((_, i) => (
           <div key={i} className="particle" style={{
             left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 500}vh`,
             animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${5 + Math.random() * 10}s`
+            animationDuration: `${8 + Math.random() * 4}s`
           }}></div>
         ))}
       </div>
@@ -49,6 +100,14 @@ function App() {
       <section className="zone surface-zone">
         <div className="sun"></div>
         <div className="waves"></div>
+        
+        {/* Surface Marine Life */}
+        <div className="dolphin" style={{ top: '60%', left: '10%' }}></div>
+        <div className="dolphin" style={{ top: '65%', left: '15%', animationDelay: '2s' }}></div>
+        <div className="seagull" style={{ top: '20%', left: '70%' }}></div>
+        <div className="seagull" style={{ top: '25%', left: '75%', animationDelay: '3s' }}></div>
+        <div className="seagull" style={{ top: '30%', left: '80%', animationDelay: '1.5s' }}></div>
+        
         <div className="content hero-content">
           <h1 className="glitch" data-text="MICHAEL LAM">MICHAEL LAM</h1>
           <p className="subtitle">Computer Science @ RPI</p>
@@ -63,8 +122,20 @@ function App() {
 
       {/* Twilight Zone - Education */}
       <section className="zone twilight-zone">
+        {/* Twilight Marine Life */}
+        <div className="tuna" style={{ top: '20%', left: '80%' }}></div>
+        <div className="tuna" style={{ top: '25%', left: '85%', animationDelay: '2s' }}></div>
+        <div className="swordfish" style={{ top: '70%', left: '10%' }}></div>
+        <div className="small-fish-school" style={{ top: '40%', left: '5%' }}>
+          <div className="small-fish"></div>
+          <div className="small-fish"></div>
+          <div className="small-fish"></div>
+          <div className="small-fish"></div>
+          <div className="small-fish"></div>
+        </div>
+        
         <div className="content">
-          <h2 className="zone-title">🎓 EDUCATION</h2>
+          <h2 className="zone-title">EDUCATION</h2>
           <div className="card">
             <h3>Rensselaer Polytechnic Institute</h3>
             <p className="location">Troy, NY | Aug 2022 - May 2026</p>
@@ -75,15 +146,21 @@ function App() {
               <li>Activities: Society of Asian Scientists and Engineers, Hong Kong Students Association (Executive Board)</li>
             </ul>
           </div>
-          <div className="fish fish-1">🐟</div>
-          <div className="fish fish-2">🐠</div>
         </div>
       </section>
 
       {/* Midnight Zone - Experience */}
       <section className="zone midnight-zone">
+        {/* Midnight Marine Life */}
+        <div className="jellyfish" style={{ top: '15%', left: '15%' }}></div>
+        <div className="jellyfish" style={{ top: '60%', right: '20%', animationDelay: '3s' }}></div>
+        <div className="jellyfish" style={{ top: '80%', left: '70%', animationDelay: '5s' }}></div>
+        <div className="squid" style={{ top: '40%', right: '10%' }}></div>
+        <div className="lanternfish" style={{ top: '25%', left: '5%' }}></div>
+        <div className="lanternfish" style={{ top: '70%', left: '10%', animationDelay: '4s' }}></div>
+        
         <div className="content">
-          <h2 className="zone-title">💼 EXPERIENCE</h2>
+          <h2 className="zone-title"> EXPERIENCE</h2>
           
           <div className="card">
             <h3>Research Assistant</h3>
@@ -114,16 +191,20 @@ function App() {
               <li>Coordinated testing materials ensuring smooth examination processes</li>
             </ul>
           </div>
-
-          <div className="jellyfish jellyfish-1">🎐</div>
-          <div className="jellyfish jellyfish-2">🎐</div>
         </div>
       </section>
 
       {/* Abyssal Zone - Projects */}
       <section className="zone abyssal-zone">
+        {/* Abyssal Marine Life */}
+        <div className="anglerfish" style={{ top: '30%', right: '15%' }}></div>
+        <div className="anglerfish" style={{ top: '65%', left: '10%', animationDelay: '4s' }}></div>
+        <div className="giant-squid" style={{ top: '50%', left: '5%' }}></div>
+        <div className="viperfish" style={{ top: '20%', left: '80%' }}></div>
+        <div className="gulper-eel" style={{ top: '75%', right: '20%' }}></div>
+        
         <div className="content">
-          <h2 className="zone-title">🚀 PROJECTS</h2>
+          <h2 className="zone-title">PROJECTS</h2>
           
           <div className="card glow">
             <h3>Vaultify</h3>
@@ -146,15 +227,19 @@ function App() {
               <li>Automated population of application fields with resume data</li>
             </ul>
           </div>
-
-          <div className="angler-fish">🐟💡</div>
         </div>
       </section>
 
       {/* Hadal Zone - Skills */}
       <section className="zone hadal-zone">
+        {/* Hadal Marine Life */}
+        <div className="snailfish" style={{ top: '40%', left: '20%' }}></div>
+        <div className="amphipod" style={{ top: '30%', right: '25%' }}></div>
+        <div className="amphipod" style={{ top: '70%', left: '15%', animationDelay: '3s' }}></div>
+        <div className="sea-cucumber" style={{ top: '85%', left: '40%' }}></div>
+        
         <div className="content">
-          <h2 className="zone-title">⚡ TECHNICAL SKILLS</h2>
+          <h2 className="zone-title">TECHNICAL SKILLS</h2>
           
           <div className="skills-grid">
             <div className="skill-category">

@@ -37,41 +37,263 @@ body {
   background: linear-gradient(to bottom, #010308 0%, #000000 100%);
 }
 
+/* Fishing Line */
+.fishing-line-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.fishing-rod {
+  position: fixed;
+  top: -20px;
+  left: 90px;
+  transform: rotate(-5deg);
+  width: 8px;
+  height: 120px;
+  background: linear-gradient(to bottom, #8B4513, #654321);
+  border-radius: 4px;
+  z-index: 101;
+}
+
+.fishing-rod::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 30px;
+  background: linear-gradient(to bottom, #A0522D, #8B4513);
+  border-radius: 6px;
+}
+
+.fishing-rod::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  background: #2C1810;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.fishing-line {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 99;
+}
+
+.fishing-hook {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 100;
+  animation: hook-sway 3s infinite ease-in-out;
+  transform: translateX(-15px);
+}
+
+.hook-shape {
+  position: relative;
+  width: 20px;
+  height: 25px;
+}
+
+.hook-shape::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #C0C0C0;
+  border-top: none;
+  border-right: none;
+  border-radius: 0 0 0 12px;
+  top: 0;
+  left: 5px;
+  transform: rotate(-45deg);
+}
+
+.hook-shape::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 10px;
+  background: #C0C0C0;
+  border-radius: 0 0 3px 0;
+  bottom: -5px;
+  right: 0;
+  transform: rotate(20deg);
+}
+
+@keyframes hook-sway {
+  0%, 100% { transform: translateX(-15px) rotate(-3deg); }
+  50% { transform: translateX(-15px) rotate(3deg); }
+}
+
 /* Depth Indicator */
 .depth-indicator {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1000;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  background: rgba(0, 20, 40, 0.75);
+  backdrop-filter: blur(10px);
+  padding: 20px 15px;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  min-width: 140px;
+}
+
+.depth-display {
+  text-align: center;
+  width: 100%;
+}
+
+.depth-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+.depth-zone-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 5px;
+  letter-spacing: 2px;
+  font-weight: 600;
 }
 
 .depth-meter {
-  width: 30px;
-  height: 150px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  overflow: hidden;
   position: relative;
+  width: 40px;
+  height: 320px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.depth-markers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.marker {
+  position: absolute;
+  right: -50px;
+  width: 40px;
+  height: 1px;
+  background: rgba(0, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.marker::before {
+  content: '';
+  position: absolute;
+  right: 38px;
+  width: 8px;
+  height: 1px;
+  background: rgba(0, 255, 255, 0.5);
+}
+
+.marker span {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  margin-left: 5px;
 }
 
 .depth-fill {
   position: absolute;
   bottom: 0;
   width: 100%;
-  background: linear-gradient(to top, #00ffff, #0080ff, #4169E1);
+  background: linear-gradient(to top, 
+    #00ffff 0%, 
+    #0080ff 30%, 
+    #4169E1 60%,
+    #1E90FF 100%
+  );
   transition: height 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  border-radius: 0 0 18px 18px;
 }
 
-.depth-label {
-  color: white;
-  font-weight: bold;
-  font-size: 16px;
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.depth-indicator-dot {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  background: #00ffff;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 10px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(0, 255, 255, 0.6),
+    0 0 30px rgba(0, 255, 255, 0.4);
+  animation: pulse-dot 2s infinite ease-in-out;
 }
+
+@keyframes pulse-dot {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.3); }
+}
+
+.depth-stats {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+
+.stat {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.stat-value {
+  font-size: 0.95rem;
+  color: #00ffff;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Depth Indicator - Old styles removed */
 
 /* Floating Particles */
 .particles {
@@ -82,24 +304,25 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .particle {
   position: absolute;
-  width: 4px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.4);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
   animation: sway 10s infinite ease-in-out;
   will-change: transform;
 }
 
 @keyframes sway {
-  0%, 100% { transform: translateX(0) translateY(0); opacity: 0.3; }
-  25% { transform: translateX(15px) translateY(-10px); opacity: 0.6; }
-  50% { transform: translateX(0) translateY(-20px); opacity: 0.4; }
-  75% { transform: translateX(-15px) translateY(-10px); opacity: 0.6; }
+  0%, 100% { transform: translateX(0) translateY(0); opacity: 0.6; }
+  25% { transform: translateX(15px) translateY(-10px); opacity: 0.9; }
+  50% { transform: translateX(0) translateY(-20px); opacity: 0.7; }
+  75% { transform: translateX(-15px) translateY(-10px); opacity: 0.9; }
 }
 
 /* Zone Sections */
@@ -294,68 +517,506 @@ body {
   text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
 }
 
-/* Animated Creatures */
-.fish, .jellyfish, .angler-fish, .treasure-chest {
+/* Marine Life - Surface Zone (0-200m) */
+.dolphin {
   position: absolute;
-  font-size: 3rem;
-  animation: swim 15s infinite ease-in-out;
-  opacity: 0.6;
+  width: 60px;
+  height: 25px;
+  background: linear-gradient(to bottom, #6B8E9F, #4A6B7C);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  animation: dolphin-swim 8s infinite ease-in-out;
+  z-index: 5;
 }
 
-.fish-1 {
-  top: 20%;
-  animation-delay: 0s;
+.dolphin::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 15px;
+  background: inherit;
+  top: -5px;
+  left: 15px;
+  border-radius: 50%;
+  transform: rotate(-30deg);
 }
 
-.fish-2 {
-  bottom: 20%;
-  animation-delay: 3s;
+.dolphin::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 12px;
+  background: inherit;
+  right: -10px;
+  top: 5px;
+  border-radius: 0 80% 80% 0;
 }
 
-.jellyfish-1 {
-  top: 30%;
-  animation: float-jellyfish 20s infinite ease-in-out;
+@keyframes dolphin-swim {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  25% { transform: translateX(100px) translateY(-30px) rotate(-5deg); }
+  50% { transform: translateX(200px) translateY(0) rotate(0deg); }
+  75% { transform: translateX(100px) translateY(30px) rotate(5deg); }
 }
 
-.jellyfish-2 {
-  bottom: 30%;
-  animation: float-jellyfish 18s infinite ease-in-out;
-  animation-delay: 5s;
+.seagull {
+  position: absolute;
+  width: 40px;
+  height: 8px;
+  animation: seagull-fly 12s infinite ease-in-out;
+  z-index: 5;
 }
 
-.angler-fish {
-  top: 50%;
-  right: 10%;
-  animation: angler-glow 3s infinite ease-in-out;
+.seagull::before,
+.seagull::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 3px;
+  background: #E8E8E8;
+  border-radius: 50%;
+  top: 0;
 }
 
-.treasure-chest {
-  font-size: 4rem;
-  text-align: center;
-  margin: 40px auto;
-  animation: treasure-pulse 2s infinite ease-in-out;
+.seagull::before {
+  left: 0;
+  transform: rotate(-20deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-@keyframes swim {
+.seagull::after {
+  right: 0;
+  transform: rotate(20deg);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+@keyframes seagull-fly {
   0%, 100% { transform: translateX(0) translateY(0); }
-  25% { transform: translateX(-30px) translateY(-20px); }
-  50% { transform: translateX(-60px) translateY(0); }
-  75% { transform: translateX(-30px) translateY(20px); }
+  50% { transform: translateX(-150px) translateY(-20px); }
 }
 
-@keyframes float-jellyfish {
+/* Marine Life - Twilight Zone (200-1000m) */
+.tuna {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  background: linear-gradient(135deg, #4A6FA5 0%, #2E4A6F 100%);
+  border-radius: 40% 60% 60% 40% / 50% 50% 50% 50%;
+  animation: tuna-swim 10s infinite ease-in-out;
+  z-index: 5;
+}
+
+.tuna::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 15px solid #2E4A6F;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  right: -12px;
+  top: 2px;
+}
+
+@keyframes tuna-swim {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-200px) translateY(30px); }
+}
+
+.swordfish {
+  position: absolute;
+  width: 70px;
+  height: 18px;
+  background: linear-gradient(to right, #5B7A9C, #3D5A7A);
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  animation: swordfish-swim 12s infinite ease-in-out;
+  z-index: 5;
+}
+
+.swordfish::before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 3px;
+  background: #8B9DAF;
+  left: -28px;
+  top: 7px;
+  border-radius: 2px;
+}
+
+@keyframes swordfish-swim {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(250px); }
+}
+
+.small-fish-school {
+  position: absolute;
+  width: 100px;
+  height: 80px;
+  animation: school-swim 15s infinite ease-in-out;
+  z-index: 5;
+}
+
+.small-fish {
+  position: absolute;
+  width: 12px;
+  height: 8px;
+  background: rgba(200, 220, 240, 0.8);
+  border-radius: 50%;
+  animation: fish-wiggle 2s infinite ease-in-out;
+}
+
+.small-fish:nth-child(1) { top: 0; left: 0; }
+.small-fish:nth-child(2) { top: 10px; left: 20px; animation-delay: 0.2s; }
+.small-fish:nth-child(3) { top: 20px; left: 10px; animation-delay: 0.4s; }
+.small-fish:nth-child(4) { top: 30px; left: 30px; animation-delay: 0.6s; }
+.small-fish:nth-child(5) { top: 40px; left: 15px; animation-delay: 0.8s; }
+
+@keyframes school-swim {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(300px) translateY(-50px); }
+}
+
+@keyframes fish-wiggle {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+}
+
+/* Marine Life - Midnight Zone (1000-4000m) */
+.jellyfish {
+  position: absolute;
+  width: 50px;
+  height: 60px;
+  z-index: 5;
+  animation: jellyfish-float 15s infinite ease-in-out;
+}
+
+.jellyfish::before {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 35px;
+  background: radial-gradient(ellipse at center, rgba(150, 180, 220, 0.6) 0%, rgba(100, 140, 200, 0.3) 100%);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  top: 0;
+  box-shadow: 0 0 20px rgba(150, 180, 220, 0.4);
+}
+
+.jellyfish::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(150, 180, 220, 0.4), transparent);
+  left: 10px;
+  top: 35px;
+  box-shadow: 
+    8px 0 0 rgba(150, 180, 220, 0.4),
+    16px 0 0 rgba(150, 180, 220, 0.4),
+    24px 0 0 rgba(150, 180, 220, 0.4),
+    32px 0 0 rgba(150, 180, 220, 0.4);
+}
+
+@keyframes jellyfish-float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-50px) rotate(10deg); }
+  25% { transform: translateY(-50px) rotate(5deg); }
+  50% { transform: translateY(-100px) rotate(0deg); }
+  75% { transform: translateY(-50px) rotate(-5deg); }
 }
 
-@keyframes angler-glow {
-  0%, 100% { filter: brightness(1); }
-  50% { filter: brightness(1.5); }
+.squid {
+  position: absolute;
+  width: 40px;
+  height: 60px;
+  z-index: 5;
+  animation: squid-swim 13s infinite ease-in-out;
 }
 
-@keyframes treasure-pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+.squid::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 35px;
+  background: linear-gradient(to bottom, rgba(180, 120, 120, 0.6), rgba(140, 80, 80, 0.5));
+  border-radius: 50% 50% 30% 30%;
+  top: 0;
+}
+
+.squid::after {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 30px;
+  background: rgba(140, 80, 80, 0.5);
+  left: 5px;
+  bottom: 0;
+  box-shadow: 
+    5px 0 0 rgba(140, 80, 80, 0.5),
+    10px 0 0 rgba(140, 80, 80, 0.5),
+    15px 0 0 rgba(140, 80, 80, 0.5),
+    20px 0 0 rgba(140, 80, 80, 0.5),
+    25px 0 0 rgba(140, 80, 80, 0.5);
+}
+
+@keyframes squid-swim {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  50% { transform: translateX(-180px) translateY(60px) rotate(-10deg); }
+}
+
+.lanternfish {
+  position: absolute;
+  width: 30px;
+  height: 15px;
+  background: linear-gradient(to right, rgba(100, 150, 180, 0.7), rgba(60, 100, 140, 0.6));
+  border-radius: 50%;
+  animation: lantern-swim 11s infinite ease-in-out;
+  z-index: 5;
+}
+
+.lanternfish::before {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, rgba(0, 255, 200, 0.9), rgba(0, 200, 150, 0.4));
+  border-radius: 50%;
+  left: 3px;
+  top: 4px;
+  box-shadow: 0 0 10px rgba(0, 255, 200, 0.8);
+  animation: bioluminescence 2s infinite ease-in-out;
+}
+
+@keyframes lantern-swim {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(200px) translateY(-40px); }
+}
+
+@keyframes bioluminescence {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Marine Life - Abyssal Zone (4000-6000m) */
+.anglerfish {
+  position: absolute;
+  width: 55px;
+  height: 40px;
+  z-index: 5;
+  animation: angler-swim 14s infinite ease-in-out;
+}
+
+.anglerfish::before {
+  content: '';
+  position: absolute;
+  width: 55px;
+  height: 40px;
+  background: linear-gradient(135deg, rgba(80, 60, 90, 0.8), rgba(40, 30, 50, 0.7));
+  border-radius: 60% 40% 40% 60% / 50% 50% 50% 50%;
+  box-shadow: inset -5px -5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.anglerfish::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: radial-gradient(circle, rgba(255, 200, 0, 1), rgba(255, 150, 0, 0.6));
+  border-radius: 50%;
+  top: -20px;
+  left: 10px;
+  box-shadow: 0 0 25px rgba(255, 200, 0, 0.9);
+  animation: lure-glow 3s infinite ease-in-out;
+}
+
+@keyframes angler-swim {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-150px) translateY(50px); }
+}
+
+@keyframes lure-glow {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.giant-squid {
+  position: absolute;
+  width: 70px;
+  height: 100px;
+  z-index: 5;
+  animation: giant-squid-swim 18s infinite ease-in-out;
+}
+
+.giant-squid::before {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 60px;
+  background: linear-gradient(to bottom, rgba(150, 100, 100, 0.5), rgba(100, 60, 60, 0.4));
+  border-radius: 50% 50% 30% 30%;
+  top: 0;
+}
+
+.giant-squid::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 50px;
+  background: rgba(100, 60, 60, 0.4);
+  left: 8px;
+  bottom: 0;
+  box-shadow: 
+    8px 0 0 rgba(100, 60, 60, 0.4),
+    16px 0 0 rgba(100, 60, 60, 0.4),
+    24px 0 0 rgba(100, 60, 60, 0.4),
+    32px 0 0 rgba(100, 60, 60, 0.4),
+    40px 0 0 rgba(100, 60, 60, 0.4),
+    48px 0 0 rgba(100, 60, 60, 0.4);
+}
+
+@keyframes giant-squid-swim {
+  0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+  50% { transform: translateX(250px) translateY(-80px) rotate(15deg); }
+}
+
+.viperfish {
+  position: absolute;
+  width: 45px;
+  height: 12px;
+  background: linear-gradient(to right, rgba(80, 90, 110, 0.7), rgba(50, 60, 80, 0.6));
+  border-radius: 50%;
+  animation: viper-swim 10s infinite ease-in-out;
+  z-index: 5;
+}
+
+.viperfish::before {
+  content: '';
+  position: absolute;
+  width: 3px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  left: 2px;
+  top: -5px;
+  box-shadow: 3px 0 0 rgba(255, 255, 255, 0.8);
+}
+
+.viperfish::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(0, 200, 255, 0.9), transparent);
+  left: 8px;
+  top: 4px;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 200, 255, 0.7);
+}
+
+@keyframes viper-swim {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-220px); }
+}
+
+.gulper-eel {
+  position: absolute;
+  width: 60px;
+  height: 25px;
+  z-index: 5;
+  animation: gulper-swim 16s infinite ease-in-out;
+}
+
+.gulper-eel::before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 25px;
+  background: linear-gradient(135deg, rgba(60, 50, 70, 0.7), rgba(40, 30, 50, 0.6));
+  border-radius: 60% 40% 50% 50%;
+  left: 0;
+}
+
+.gulper-eel::after {
+  content: '';
+  position: absolute;
+  width: 35px;
+  height: 8px;
+  background: linear-gradient(to right, rgba(60, 50, 70, 0.6), transparent);
+  border-radius: 50%;
+  right: 0;
+  top: 8px;
+}
+
+@keyframes gulper-swim {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(180px) translateY(-60px); }
+}
+
+/* Marine Life - Hadal Zone (6000m+) */
+.snailfish {
+  position: absolute;
+  width: 40px;
+  height: 20px;
+  background: linear-gradient(to right, rgba(150, 140, 160, 0.5), rgba(120, 110, 130, 0.4));
+  border-radius: 50%;
+  animation: snailfish-drift 20s infinite ease-in-out;
+  z-index: 5;
+}
+
+@keyframes snailfish-drift {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50% { transform: translateX(-100px) translateY(30px); }
+}
+
+.amphipod {
+  position: absolute;
+  width: 15px;
+  height: 10px;
+  background: rgba(180, 180, 180, 0.4);
+  border-radius: 50%;
+  animation: amphipod-scuttle 8s infinite ease-in-out;
+  z-index: 5;
+}
+
+.amphipod::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: rgba(180, 180, 180, 0.3);
+  left: -5px;
+  top: 4px;
+  box-shadow: 0 4px 0 rgba(180, 180, 180, 0.3);
+}
+
+@keyframes amphipod-scuttle {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(30px) rotate(5deg); }
+  50% { transform: translateX(60px) rotate(0deg); }
+  75% { transform: translateX(30px) rotate(-5deg); }
+}
+
+.sea-cucumber {
+  position: absolute;
+  width: 50px;
+  height: 15px;
+  background: linear-gradient(to right, rgba(100, 90, 80, 0.5), rgba(80, 70, 60, 0.4));
+  border-radius: 25px;
+  animation: cucumber-crawl 25s infinite ease-in-out;
+  z-index: 5;
+}
+
+.sea-cucumber::before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 3px;
+  background: rgba(120, 110, 100, 0.3);
+  top: 12px;
+  left: 10px;
+  border-radius: 2px;
+}
+
+@keyframes cucumber-crawl {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(50px); }
 }
 
 /* Skills Grid */
@@ -429,12 +1090,30 @@ body {
   }
   
   .depth-indicator {
-    top: 10px;
     right: 10px;
+    padding: 15px 10px;
+    min-width: 150px;
+  }
+  
+  .depth-number {
+    font-size: 1.8rem;
   }
   
   .depth-meter {
-    height: 100px;
-    width: 20px;
+    height: 180px;
+    width: 40px;
+  }
+  
+  .fishing-rod {
+    left: 60px;
+  }
+  
+  .fishing-line line {
+    x1: 70;
+    x2: 70;
+  }
+  
+  .fishing-hook {
+    left: 70px;
   }
 }
